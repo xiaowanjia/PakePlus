@@ -1,22 +1,693 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <link rel="stylesheet" href="styles.css" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>PakePlus App</title>
-        <script type="module" src="/main.js" defer></script>
-    </head>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>讲真工具箱</title>
+    <link rel="stylesheet" href="css/layui.css">
+    <link rel="stylesheet" href="css/style.css">
+	<link rel="icon" type="image/x-icon" href="../index_files/favicon.ico">
+</head>
+<body>
+    <div class="layout-container">
+        <!-- 左侧菜单 -->
+        <div class="left-menu">
+            <div class="logo">讲真工具箱</div>
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                <li class="layui-nav-item">
+                    <a href="javascript:;"><i class="layui-icon layui-icon-video"></i> 视频课程</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;"><i class="layui-icon layui-icon-heart"></i> 健康课程</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;"><i class="layui-icon layui-icon-edit"></i> 书法带练</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;"><i class="layui-icon layui-icon-star"></i> 记忆课程</a>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <hr class="layui-bg-gray" style="margin: 10px 0;">
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;"><i class="layui-icon layui-icon-search"></i> 小课查询</a>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <hr class="layui-bg-gray" style="margin: 10px 0;">
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;"><i class="layui-icon layui-icon-dialogue"></i> 一般反馈</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;"><i class="layui-icon layui-icon-form"></i> 补录订单</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;"><i class="layui-icon layui-icon-rmb"></i> 开具发票</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;"><i class="layui-icon layui-icon-rmb"></i> 线下退款</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;"><i class="layui-icon layui-icon-user"></i> 学员上门</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;"><i class="layui-icon layui-icon-file"></i> 工单投诉</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;"><i class="layui-icon layui-icon-survey"></i> 外部投诉</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;"><i class="layui-icon layui-icon-password"></i> 屏蔽号码</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;"><i class="layui-icon layui-icon-link"></i> 解绑号码</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;"><i class="layui-icon layui-icon-logout"></i> 注销账号</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;"><i class="layui-icon layui-icon-auz"></i> 诈骗反馈</a>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- 右侧内容 -->
+        <div class="right-content">
+            <div class="content-header">
+                <h1 class="welcome-title">欢迎使用讲真工具箱</h1>
+            </div>
+            <div class="layui-row layui-col-space15" id="courseContent" style="display: none;">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">课程列表</div>
+                        <div class="layui-card-body" id="courseList" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                            <!-- 课程列表将通过JavaScript动态生成 -->
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">退款计算</div>
+                        <div class="layui-card-body">
+                            <div class="layui-form">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">当前课程</label>
+                                    <div class="layui-input-block">
+                                        <div id="selectedCourseName" class="course-info-text">未选择课程</div>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">课程简介</label>
+                                    <div class="layui-input-block">
+                                        <div id="courseDescription" class="course-info-text">-</div>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">课程信息</label>
+                                    <div class="layui-input-block" style="display: flex; gap: 15px;">
+                                        <div style="flex: 1;">
+                                            <div class="course-info-text">
+                                                <span>售价：</span>
+                                                <span id="coursePrice" class="price-text">-</span>
+                                            </div>
+                                        </div>
+                                        <div style="flex: 1;">
+                                            <div class="course-info-text">
+                                                <span>章节：</span>
+                                                <span id="courseChapters" class="price-text">-</span>
+                                            </div>
+                                        </div>
+                                        <div style="flex: 1;">
+                                            <div class="course-info-text">
+                                                <span>单价：</span>
+                                                <span id="courseUnitPrice" class="price-text">-</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">已学章节</label>
+                                    <div class="layui-input-block">
+                                        <input type="number" id="learnedChapters" class="layui-input custom-input" value="0" min="0">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">礼包费用</label>
+                                    <div class="layui-input-block">
+                                        <input type="number" id="giftFee" class="layui-input custom-input" value="0" min="0">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label"></label>
+                                    <div class="layui-input-block" style="margin-left: 0;">
+                                        <button type="button" class="layui-btn" id="calculateBtn" style="width: auto;">
+                                            <i class="layui-icon layui-icon-rmb"></i> 计算退款
+                                        </button>
+                                        <span id="refundAmount" style="margin-left: 15px; color: #ff5722; font-weight: bold;">退款金额：0元</span>
+                                        <button type="button" class="layui-btn" id="copyAmountBtn" style="width: auto; margin-left: 10px; background-color: #1e9fff;">
+                                            <i class="layui-icon layui-icon-file"></i> 复制金额
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">话术生成</div>
+                        <div class="layui-card-body">
+                            <div id="scriptContent" class="course-info-text" style="margin-bottom: 15px; min-height: 100px; max-height: 300px; overflow-y: auto;">请先选择课程并计算退款</div>
+                            <div class="layui-input-block" style="margin-left: 110px;">
+                                <button class="layui-btn layui-btn-normal layui-btn-lg calculate-btn" id="copyBtn" style="width: auto;">
+                                    <i class="layui-icon layui-icon-file"></i> 复制话术
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <body>
-        <main class="container">
-            <h1>Welcome to PakePlus</h1>
+    <script src="js/layui.js"></script>
+    <script src="js/courses.js"></script>
+    <script src="js/forms.js"></script>
+    <script src="js/minicourses.js"></script>
+    <script src="js/minicourselist.js"></script>
+    <script>
+    // 处理退款话术按钮点击
+    function handleRefundScript(courseName) {
+        if (!canRefund(courseName)) {
+            layer.msg('该课程不支持退款');
+            return;
+        }
+        
+        const script = generateRefundScript(courseName);
+        // 复制到剪贴板
+        const textarea = document.createElement('textarea');
+        textarea.value = script;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        
+        layer.msg('退款话术已复制到剪贴板');
+    }
+    </script>
+    <script>
+    layui.use(['element', 'layer', 'form'], function(){
+        var element = layui.element;
+        var layer = layui.layer;
+        var form = layui.form;
+        var selectedCourse = null;
+    
+        // 监听导航点击
+        element.on('nav(test)', function(elem){
+            var text = elem.text().trim();
+            var rightContent = document.querySelector('.right-content');
+            
+            // 清除之前的内容
+            rightContent.innerHTML = '';
+            
+            if (text === '小课查询') {
+                // 小课查询页面
+                rightContent.innerHTML = `
+                    <div class="content-header">
+                        <h1 class="welcome-title">小课查询</h1>
+                    </div>
+                    <div class="layui-row layui-col-space15">
+                        <div class="layui-col-md12">
+                            <div class="layui-card">
+                                <div class="layui-card-header">小课程列表</div>
+                                <div class="layui-card-body">
+                                    <table class="layui-table">
+                                        <thead>
+                                            <tr>
+                                                <th>课程名称</th>
+                                                <th>价格</th>
+                                                <th>退款规则</th>
+                                                <th>备注</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="miniCourseList"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                renderMiniCourseList();
+            } else if (text === '视频课程' || text === '健康课程' || text === '书法带练' || text === '记忆课程') {
+                // 课程类菜单
+                rightContent.innerHTML = `
+                    <div class="content-header">
+                        <h1 class="welcome-title">欢迎使用讲真工具箱</h1>
+                    </div>
+                    <div class="layui-row layui-col-space15" id="courseContent">
+                        <div class="layui-col-md12">
+                            <div class="layui-card">
+                                <div class="layui-card-header">课程列表</div>
+                                <div class="layui-card-body" id="courseList" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
+                            </div>
+                        </div>
+                        <div class="layui-col-md12">
+                            <div class="layui-card">
+                                <div class="layui-card-header">退款计算</div>
+                                <div class="layui-card-body">
+                                    <div class="layui-form">
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">当前课程</label>
+                                            <div class="layui-input-block">
+                                                <div id="selectedCourseName" class="course-info-text">未选择课程</div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">课程简介</label>
+                                            <div class="layui-input-block">
+                                                <div id="courseDescription" class="course-info-text">-</div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">课程信息</label>
+                                            <div class="layui-input-block" style="display: flex; gap: 15px;">
+                                                <div style="flex: 1;">
+                                                    <div class="course-info-text">
+                                                        <span>售价：</span>
+                                                        <span id="coursePrice" class="price-text">-</span>
+                                                    </div>
+                                                </div>
+                                                <div style="flex: 1;">
+                                                    <div class="course-info-text">
+                                                        <span>章节：</span>
+                                                        <span id="courseChapters" class="price-text">-</span>
+                                                    </div>
+                                                </div>
+                                                <div style="flex: 1;">
+                                                    <div class="course-info-text">
+                                                        <span>单价：</span>
+                                                        <span id="courseUnitPrice" class="price-text">-</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">已学章节</label>
+                                            <div class="layui-input-block">
+                                                <input type="number" id="learnedChapters" class="layui-input custom-input" value="0" min="0">
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">礼包费用</label>
+                                            <div class="layui-input-block">
+                                                <input type="number" id="giftFee" class="layui-input custom-input" value="0" min="0">
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label"></label>
+                                            <div class="layui-input-block" style="margin-left: 0;">
+                                                <button type="button" class="layui-btn" id="calculateBtn" style="width: auto;">
+                                                    <i class="layui-icon layui-icon-rmb"></i> 计算退款
+                                                </button>
+                                                <span id="refundAmount" style="margin-left: 15px; color: #ff5722; font-weight: bold;">退款金额：0元</span>
+                                                <button type="button" class="layui-btn" id="copyAmountBtn" style="width: auto; margin-left: 10px; background-color: #1e9fff;">
+                                                    <i class="layui-icon layui-icon-file"></i> 复制金额
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-md12">
+                            <div class="layui-card">
+                                <div class="layui-card-header">话术生成</div>
+                                <div class="layui-card-body">
+                                    <div id="scriptContent" class="course-info-text" style="margin-bottom: 15px; min-height:50px; max-height: 300px; overflow-y: auto;">请先选择课程并计算退款</div>
+                                    <div class="layui-input-block" style="margin-left: 110px;">
+                                        <button type="button" class="layui-btn" id="copyBtn" style="width: auto;">
+                                            <i class="layui-icon layui-icon-file"></i> 复制话术
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // 根据课程类型渲染课程列表
+                if (text === '视频课程') {
+                    renderCourseList('video');
+                } else if (text === '健康课程') {
+                    renderCourseList('health');
+                } else if (text === '书法带练') {
+                    renderCourseList('calligraphy');
+                } else if (text === '记忆课程') {
+                    renderCourseList('memory');
+                }
+                
+                // 重新绑定计算和复制按钮事件
+                bindCourseEvents();
+            } else if (text === '小课查询') {
+                // 小课查询菜单
+                rightContent.innerHTML = `
+                    <div class="content-header">
+                        <h1 class="welcome-title">小课查询</h1>
+                    </div>
+                    <div class="layui-card">
+                        <div class="layui-card-body">
+                            <table class="layui-table" lay-skin="line">
+                                <thead>
+                                    <tr>
+                                        <th>课程名称</th>
+                                        <th>售价</th>
+                                        <th>退款规则</th>
+                                        <th>备注</th>
+                                        <th>退款话术</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="miniCourseList"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+                
+                // 渲染小课列表
+                const miniCourses = getMiniCourses();
+                const tbody = document.getElementById('miniCourseList');
+                miniCourses.forEach(course => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${course.name}</td>
+                        <td>${course.price}元</td>
+                        <td>${course.refundRule}</td>
+                        <td>${course.remark}</td>
+                        <td>
+                            ${course.canRefund ? 
+                                `<button type="button" class="layui-btn layui-btn-sm" onclick="handleRefundScript('${course.name}')">退款话术</button>` : 
+                                `<button type="button" class="layui-btn layui-btn-sm layui-btn-danger">不可退款</button>`
+                            }
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
 
-            <form class="row" id="greet-form">
-                <input id="greet-input" placeholder="Enter a name..." />
-                <button type="submit">Greet</button>
-            </form>
-            <p id="greet-msg"></p>
-        </main>
-    </body>
+                // 添加鼠标悬停效果
+                const rows = tbody.getElementsByTagName('tr');
+                Array.from(rows).forEach(row => {
+                    row.addEventListener('mouseover', () => {
+                        row.classList.add('layui-table-hover');
+                    });
+                    row.addEventListener('mouseout', () => {
+                        row.classList.remove('layui-table-hover');
+                    });
+                });
+            } else {
+                // 其他表单类菜单
+                switch(text) {
+                    case '一般反馈':
+                        rightContent.innerHTML = renderForm('generalFeedback');
+                        break;
+                    case '补录订单':
+                        rightContent.innerHTML = renderForm('orderRecord');
+                        break;
+                    case '开具发票':
+                        rightContent.innerHTML = renderForm('invoice');
+                        break;
+                    case '线下退款':
+                        rightContent.innerHTML = renderForm('offlineRefund');
+                        break;
+                    case '学员上门':
+                        rightContent.innerHTML = renderForm('visitFeedback');
+                        break;
+                    case '工单投诉':
+                        rightContent.innerHTML = renderForm('workOrder');
+                        break;
+                    case '外部投诉':
+                        rightContent.innerHTML = renderForm('externalComplaint');
+                        break;
+                    case '屏蔽号码':
+                        rightContent.innerHTML = renderForm('blockNumber');
+                        break;
+                    case '解绑号码':
+                        rightContent.innerHTML = renderForm('unbindNumber');
+                        break;
+                    case '注销账号':
+                        rightContent.innerHTML = renderForm('accountCancellation');
+                        break;
+                    case '诈骗反馈':
+                        rightContent.innerHTML = renderForm('fraudFeedback');
+                        break;
+                }
+                // 重新渲染表单元素
+                form.render();
+                // 初始化表单事件监听
+                initForms();
+            }
+        });
+        
+        // 绑定课程相关事件
+        function bindCourseEvents() {
+            // 计算退款按钮点击事件
+            document.getElementById('calculateBtn').addEventListener('click', function() {
+                if (!selectedCourse) {
+                    layer.msg('请先选择课程');
+                    return;
+                }
+        
+                const learnedChapters = parseInt(document.getElementById('learnedChapters').value) || 0;
+                const giftFee = parseInt(document.getElementById('giftFee').value) || 0;
+        
+                if (learnedChapters > selectedCourse.chapters) {
+                    layer.msg('已学章节不能超过总章节数');
+                    return;
+                }
+        
+                const refundAmount = calculateRefund(selectedCourse, learnedChapters, giftFee);
+                const script = generateScript(selectedCourse, learnedChapters, giftFee, refundAmount);
+                document.getElementById('scriptContent').textContent = script;
+                document.getElementById('refundAmount').textContent = `退款金额：${refundAmount}元`;
+            });
+
+            // 复制金额按钮点击事件
+            document.getElementById('copyAmountBtn').addEventListener('click', function() {
+                const refundText = document.getElementById('refundAmount').textContent;
+                const amount = refundText.match(/\d+(\.\d+)?/)?.[0] || '0';
+                
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(amount).then(() => {
+                        layer.msg('复制成功');
+                    }).catch(() => {
+                        // 如果clipboard API失败，尝试使用execCommand
+                        copyTextToClipboard(amount);
+                    });
+                } else {
+                    // 使用传统的document.execCommand方法
+                    copyTextToClipboard(amount);
+                }
+                
+                // 辅助函数：使用execCommand复制文本
+                function copyTextToClipboard(text) {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = text;
+                    textarea.style.position = 'fixed';
+                    textarea.style.opacity = '0';
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    
+                    try {
+                        const successful = document.execCommand('copy');
+                        document.body.removeChild(textarea);
+                        if (successful) {
+                            layer.msg('复制成功');
+                        } else {
+                            layer.msg('复制失败，请手动复制');
+                        }
+                    } catch (err) {
+                        document.body.removeChild(textarea);
+                        layer.msg('浏览器不支持自动复制，请手动复制');
+                    }
+                }
+            });
+            // 复制话术按钮点击事件
+            document.getElementById('copyBtn').addEventListener('click', function() {
+                const scriptContent = document.getElementById('scriptContent').textContent;
+                if (scriptContent === '请先选择课程并计算退款') {
+                    layer.msg('请先生成话术');
+                    return;
+                }
+                
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(scriptContent).then(function() {
+                        layer.msg('复制成功');
+                    }).catch(function() {
+                        // 如果clipboard API失败，尝试使用execCommand
+                        copyTextToClipboard(scriptContent);
+                    });
+                } else {
+                    // 使用传统的document.execCommand方法
+                    copyTextToClipboard(scriptContent);
+                }
+                
+                // 辅助函数：使用execCommand复制文本
+                function copyTextToClipboard(text) {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = text;
+                    textarea.style.position = 'fixed';
+                    textarea.style.opacity = '0';
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    
+                    try {
+                        const successful = document.execCommand('copy');
+                        document.body.removeChild(textarea);
+                        if (successful) {
+                            layer.msg('复制成功');
+                        } else {
+                            layer.msg('复制失败，请手动复制');
+                        }
+                    } catch (err) {
+                        document.body.removeChild(textarea);
+                        layer.msg('浏览器不支持自动复制，请手动复制');
+                    }
+                }
+            });
+        }
+    
+        // 渲染课程列表
+        function renderCourseList(type) {
+            var courseListHtml = courses[type].map(course => `
+                <div class="layui-card course-item" style="width: 180px; margin: 4px; cursor: pointer; border-radius: 8px; box-shadow: 0 8px 8px rgba(0,0,0,0.08); transition: all 0.3s ease; background: linear-gradient(to bottom right, #ffffff, #f8f8f8);" data-name="${course.name}">
+                    <div class="layui-card-body" style="padding: 8px;">
+                        <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                            <i class="layui-icon layui-icon-star-fill" style="font-size: 14px; color: #009688; margin-right: 4px;"></i>
+                            <h3 style="color: #333; margin: 0; font-size: 15px; font-weight: 600;">${course.name}</h3>
+                        </div>
+                        <div style="background: rgba(0,150,136,0.05); padding: 6px; border-radius: 6px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div style="display: flex; align-items: center;">
+                                    <i class="layui-icon layui-icon-rmb" style="font-size: 11px; margin-right: 3px; color: #009688;"></i>
+                                    <span style="color: #ff5722; font-weight: 600; margin-left: 2px; font-size: 15px;">${course.price}元</span>
+                                </div>
+                                <div style="display: flex; align-items: center; margin-left: 8px;">
+                                    <i class="layui-icon layui-icon-read" style="font-size: 11px; margin-right: 3px; color: #009688;"></i>
+                                    <span style="color: #1E9FFF; font-weight: 600; margin-left: 2px; font-size: 15px;">${course.chapters}章</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+    
+            document.getElementById('courseList').innerHTML = courseListHtml;
+    
+            // 添加课程选择事件
+            document.querySelectorAll('.course-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    // 移除其他课程的选中状态
+                    document.querySelectorAll('.course-item').forEach(i => {
+                        i.style.backgroundColor = '';
+                        i.style.transform = 'scale(1)';
+                        i.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+                    });
+                    // 设置当前课程的选中状态
+                    this.style.backgroundColor = '#e6f7f5';
+                    this.style.transform = 'scale(1.05)';
+                    this.style.boxShadow = '0 8px 16px rgba(0,150,136,0.2)';
+    
+                    // 更新选中的课程
+                    const courseName = this.getAttribute('data-name');
+                    selectedCourse = courses[type].find(c => c.name === courseName);
+                    // 重置退款表单
+                    resetRefundForm();
+                    // 重置退款金额显示
+                    document.getElementById('refundAmount').textContent = '退款金额：0元';
+                    
+                    // 重置表单
+                    resetRefundForm();
+                    
+                    // 更新课程信息
+                    updateCourseInfo();
+                });
+            });
+        }
+    
+        // 更新课程信息
+        function updateCourseInfo() {
+            if (selectedCourse) {
+                document.getElementById('selectedCourseName').textContent = selectedCourse.name;
+                document.getElementById('courseDescription').textContent = selectedCourse.description;
+                document.getElementById('coursePrice').textContent = selectedCourse.price + '元';
+                document.getElementById('courseChapters').textContent = selectedCourse.chapters + '章';
+                document.getElementById('courseUnitPrice').textContent = selectedCourse.unitPrice + '元/章';
+            }
+        }
+    
+        // 计算退款按钮点击事件
+        document.getElementById('calculateBtn').addEventListener('click', function() {
+            if (!selectedCourse) {
+                layer.msg('请先选择课程');
+                return;
+            }
+    
+            const learnedChapters = parseInt(document.getElementById('learnedChapters').value) || 0;
+            const giftFee = parseInt(document.getElementById('giftFee').value) || 0;
+    
+            if (learnedChapters > selectedCourse.chapters) {
+                layer.msg('已学章节不能超过总章节数');
+                return;
+            }
+    
+            const refundAmount = calculateRefund(selectedCourse, learnedChapters, giftFee);
+            const script = generateScript(selectedCourse, learnedChapters, giftFee, refundAmount);
+            document.getElementById('scriptContent').textContent = script;
+        });
+
+        // 复制话术按钮点击事件
+        document.getElementById('copyBtn').addEventListener('click', function() {
+            const scriptContent = document.getElementById('scriptContent').textContent;
+            if (scriptContent === '请先选择课程并计算退款') {
+                layer.msg('请先生成话术');
+                return;
+            }
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(scriptContent).then(function() {
+                    layer.msg('复制成功');
+                }).catch(function() {
+                    // 如果clipboard API失败，尝试使用execCommand
+                    copyTextToClipboard(scriptContent);
+                });
+            } else {
+                // 使用传统的document.execCommand方法
+                copyTextToClipboard(scriptContent);
+            }
+            
+            // 辅助函数：使用execCommand复制文本
+            function copyTextToClipboard(text) {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+                textarea.select();
+                
+                try {
+                    const successful = document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    if (successful) {
+                        layer.msg('复制成功');
+                    } else {
+                        layer.msg('复制失败，请手动复制');
+                    }
+                } catch (err) {
+                    document.body.removeChild(textarea);
+                    layer.msg('浏览器不支持自动复制，请手动复制');
+                }
+            }
+        });
+    });
+    </script>
+</body>
 </html>
